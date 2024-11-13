@@ -1,0 +1,39 @@
+@startuml
+title Diagram Alur untuk Aplikasi Penjadwalan Kelas
+
+start
+
+: Buka Aplikasi;
+
+if (Tipe Pengguna) then (Admin)
+    : Login Admin;
+    : Masuk ke Manajemen Jadwal;
+    
+    if (Pilih Tindakan) then (Tambah Jadwal)
+        : Masukkan Detail Jadwal;
+        : Simpan Jadwal;
+    else if (Edit Jadwal)
+        : Pilih Jadwal untuk Diedit;
+        : Perbarui Detail;
+        : Simpan Perubahan;
+    else if (Hapus Jadwal)
+        : Pilih Jadwal untuk Dihapus;
+        : Konfirmasi Penghapusan;
+    endif
+
+    : Logout;
+
+else (Mahasiswa)
+    : Akses Tampilan Jadwal;
+    : Pilih Jadwal Mingguan;
+
+    if (Pilih Detail Jadwal) then
+        : Lihat Detail (Tanggal, Waktu, Durasi, Mata Kuliah, Sesi, Dosen, Lokasi);
+    endif
+    
+    : Tutup Tampilan Jadwal;
+
+endif
+
+stop
+@enduml
