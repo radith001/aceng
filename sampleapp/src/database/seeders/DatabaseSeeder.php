@@ -3,51 +3,48 @@
 namespace Database\Seeders;
 
 use App\Models\User;
-use App\Models\Schedules;
-// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
 {
-    /**
-     * Seed the application's database.
-     */
     public function run(): void
     {
-        // User::factory(10)->create();
+        // Call RoleSeeder first to create roles
+        $this->call([RoleSeeder::class]);
 
+        // Seed users after roles exist
         $this->seedUsers();
-        $this->callSeeders();
+
+        // Additional seeders
+        $this->call([SchedulesSeeder::class]);
     }
 
-    private function seedUsers(): void 
+    private function seedUsers(): void
     {
-        if (!User::where('email', 'admin@admin.com')->exists()){
-            $users = User::factory()->createmany([
-                [
-                    'name' => 'Admin',
-                    'email' => 'admin@admin.com',
-                    'password' => bcrypt('password'),
-                ],
-                [
-                    'name' => 'Mahasiswa',
-                    'email' => 'mhs@admin.com',
-                    'password' => bcrypt('password'),  
-                ]
+        // Create Admin user if not exists
+        $adminEmail = 'admin@admin.com';
+
+        if (!User::where('email', $adminEmail)->exists()) {
+            $admin = User::create([
+                'name' => 'Admin',
+                'email' => $adminEmail,
+                'password' => bcrypt('password'),
             ]);
 
-            foreach ($users as $user) {
-                if ($user -> email == 'admin@admin.com'){
-                    $user->assignRole('super_admin');
-                }
-            }
+            $admin->assignRole('super_admin');
         }
-    }
 
-    private function callSeeders(): void {
-        $this->call([
-            RoleSeeder::class,
-            SchedulesSeeder::class,
-        ]);
+        // Create Mahasiswa user if not exists
+        $mhsEmail = 'mhs@admin.com';
+
+        if (!User::where('email', $mhsEmail)->exists()) {
+            $mhs = User::create([
+                'name' => 'Mahasiswa',
+                'email' => $mhsEmail,
+                'password' => bcrypt('password'),
+            ]);
+
+            $mhs->assignRole('Mahasiswa');
+        }
     }
 }

@@ -1,0 +1,18 @@
+{
+  "name": "@radith001/aceng",
+  "version": "1.0.0",
+  "description": "belajar ama munte & aceng",
+  "keywords": [
+    "tutorial"
+  ],   
+  "main": "index.js",
+  
+  "scripts":{
+    "postinstall": "echo 'apa bae'"
+  },
+  "author": "radith001",
+  "licenses": "MIT",
+  "dependencies": {
+    "@radith001/belajar": "^1.0.0"
+  }
+}

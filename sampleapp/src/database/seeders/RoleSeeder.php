@@ -2,17 +2,29 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\ConsolSeeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Models\Role;
+use App\Models\User;
 
-class RoleSeeder extends Seeder 
+class RoleSeeder extends Seeder
 {
-    public function run(): void 
+    public function run(): void
     {
-        if (!Role::where('name', 'Mahasiswa')->where('guard_name', 'web')->exists()) {
-            Role::create(['name' => 'Mahasiswa', 'guard_name' => 'web']);
+        // Ensure roles exist
+        $mahasiswaRole = Role::firstOrCreate(['name' => 'Mahasiswa', 'guard_name' => 'web']);
+        $adminRole = Role::firstOrCreate(['name' => 'super_admin', 'guard_name' => 'web']);
+
+        // Assign roles to specific users based on email
+        $mahasiswaUser = User::where('email', 'mhs@admin.com')->first();
+        $adminUser = User::where('email', 'admin@admin.com')->first();
+
+        if ($mahasiswaUser) {
+            $mahasiswaUser->assignRole($mahasiswaRole);
+        }
+
+        if ($adminUser) {
+            $adminUser->assignRole($adminRole);
         }
     }
 }
